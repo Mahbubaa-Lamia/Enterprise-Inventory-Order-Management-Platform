@@ -13,13 +13,12 @@ export default function OrderKhata() {
 
   const loadData = async () => {
     try {
-      // 👈 আইপি আপডেট করা হয়েছে
       const medRes = await axios.get('https://eiomp.onrender.com/api/medicines/all');
       setMedicines(medRes.data);
       const orderRes = await axios.get('https://eiomp.onrender.com/api/orders/all');
       setOrders(orderRes.data);
     } catch (err) {
-      console.error(err);
+      console.error("Error loading data:", err);
     }
   };
 
@@ -32,7 +31,6 @@ export default function OrderKhata() {
     const orderData = { customerName, phone, address, medicineId: selectedMedicine, quantity: Number(quantity) };
 
     try {
-      // 👈 আইপি আপডেট করা হয়েছে
       await axios.post('https://eiomp.onrender.com/api/orders/add', orderData);
       alert('অর্ডার সফলভাবে ডাটাবেজে যুক্ত হয়েছে!');
       setCustomerName(''); setPhone(''); setAddress(''); setSelectedMedicine(''); setQuantity('');
@@ -44,9 +42,9 @@ export default function OrderKhata() {
 
   const handleDeliver = async (orderId) => {
     try {
-      // 👈 আইপি আপডেট করা হয়েছে
-    const res = await axios.put('https://eiomp.onrender.com/api/orders/deliver/${orderId}');
-      alert(res.data.message);
+      // 👈 এখানে নিশ্চিতভাবে ব্যাকটিক (``) ব্যবহার করা হয়েছে
+      const res = await axios.put(`https://eiomp.onrender.com/api/orders/deliver/${orderId}`);
+      alert(res.data.message || 'ডেলিভারি সফল!');
       loadData();
     } catch (err) {
       alert('ডেলিভারি প্রসেস করা যায়নি');
@@ -94,7 +92,7 @@ export default function OrderKhata() {
                 <tr className="border-b border-neutral-800 bg-neutral-900/60 text-slate-400 font-semibold text-xs uppercase tracking-widest">
                   <th className="p-5">গ্রাহক বিবরণ</th>
                   <th className="p-5">প্রোডাক্ট ও ভলিউম</th>
-                  <th className="p-5 text-center">গেটওয়ে স্ট্যাটাস</th>
+                  <th className="p-5 text-center">গেটওয়ে স্ট্যাটাস</th>
                   <th className="p-5 text-right">অ্যাকশন</th>
                 </tr>
               </thead>

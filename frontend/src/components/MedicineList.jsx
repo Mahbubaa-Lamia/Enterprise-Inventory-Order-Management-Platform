@@ -1,22 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios'; // 👈 এখানে কোনো চাইনিজ অক্ষর নেই, একদম ক্লিন!
+import axios from 'axios';
 
 export default function MedicineList() {
   const [medicines, setMedicines] = useState([]);
 
   const fetchMedicines = async () => {
     try {
-      // ফোন থেকে ডাটা পাওয়ার জন্য লোকালহোস্ট বদলে তোমার পিসির আইপি দেওয়া হয়েছে
       const response = await axios.get('https://eiomp.onrender.com/api/medicines/all');
       setMedicines(response.data);
     } catch (error) {
-      console.error(error);
+      console.error("Error fetching medicines:", error);
     }
   };
 
   useEffect(() => {
     fetchMedicines();
-  }, [medicines]);
+  }, []); // 👈 ইনফিনিট লুপ বন্ধ করার জন্য ডিপেন্ডেন্সি খালি করা হয়েছে
 
   return (
     <div className="p-6">
@@ -56,4 +55,4 @@ export default function MedicineList() {
       )}
     </div>
   );
-} 
+}

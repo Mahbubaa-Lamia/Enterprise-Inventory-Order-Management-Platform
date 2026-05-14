@@ -18,7 +18,6 @@ export default function AddMedicine() {
     };
 
     try {
-      // 👈 এখানে তোমার পিসির আইপি বসানো হয়েছে যেন ফোন থেকে ডাটা সেভ হয়
       await axios.post('https://eiomp.onrender.com/api/medicines/add', medicineData);
       alert('সফলভাবে স্টক আপডেট হয়েছে! 🎉');
       setName(''); setStock(''); setCostPrice(''); setSellingPrice('');
@@ -74,4 +73,4 @@ export default function AddMedicine() {
       </form>
     </div>
   );
-}
+} 
