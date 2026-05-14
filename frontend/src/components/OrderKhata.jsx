@@ -45,7 +45,7 @@ export default function OrderKhata() {
   const handleDeliver = async (orderId) => {
     try {
       // 👈 আইপি আপডেট করা হয়েছে
-      const res = await axios.put('https://eiomp.onrender.com/api/orders/deliver/${orderId}`);
+    const res = await axios.put('https://eiomp.onrender.com/api/orders/deliver/${orderId}`);
       alert(res.data.message);
       loadData();
     } catch (err) {
