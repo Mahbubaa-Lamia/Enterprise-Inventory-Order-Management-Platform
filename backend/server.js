@@ -13,7 +13,7 @@ app.use(cors({
 app.use(express.json());
 
 // MongoDB কানেকশন (ব্র্যাকেট ছাড়া একদম ক্লিন পাসওয়ার্ড ও ডাটাবেজ নাম যুক্ত)
-mongoose.connect('mongodb+srv://mahbubaalamia494_db_user:mahbubaa123@cluster0.wopcirx.mongodb.net/inventory_db?retryWrites=true&w=majority') 
+mongoose.connect('mongodb+srv://mahbubaalamia494_db_user:mahbubaa123@cluster1.wopcirx.mongodb.net/inventory_db?retryWrites=true&w=majority') 
   .then(() => console.log('Successfully connected to MongoDB Database! 🎉'))
   .catch((err) => console.error('Database connection error ❌:', err)); 
 
