@@ -7,7 +7,7 @@ export default function MedicineList() {
   const fetchMedicines = async () => {
     try {
       // ফোন থেকে ডাটা পাওয়ার জন্য লোকালহোস্ট বদলে তোমার পিসির আইপি দেওয়া হয়েছে
-      const response = await axios.get('http://localhost:5000/api/medicines/all');
+      const response = await axios.get('https://eiomp.onrender.com/api/medicines/all');
       setMedicines(response.data);
     } catch (error) {
       console.error(error);

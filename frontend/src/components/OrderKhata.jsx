@@ -14,9 +14,9 @@ export default function OrderKhata() {
   const loadData = async () => {
     try {
       // 👈 আইপি আপডেট করা হয়েছে
-      const medRes = await axios.get('http://localhost:5000/api/medicines/all');
+      const medRes = await axios.get('https://eiomp.onrender.com/api/medicines/all');
       setMedicines(medRes.data);
-      const orderRes = await axios.get('http://localhost:5000/api/orders/all');
+      const orderRes = await axios.get('https://eiomp.onrender.com/api/orders/all');
       setOrders(orderRes.data);
     } catch (err) {
       console.error(err);
@@ -33,7 +33,7 @@ export default function OrderKhata() {
 
     try {
       // 👈 আইপি আপডেট করা হয়েছে
-      await axios.post('http://localhost:5000/api/orders/add', orderData);
+      await axios.post('https://eiomp.onrender.com/api/orders/add', orderData);
       alert('অর্ডার সফলভাবে ডাটাবেজে যুক্ত হয়েছে!');
       setCustomerName(''); setPhone(''); setAddress(''); setSelectedMedicine(''); setQuantity('');
       loadData();
@@ -45,7 +45,7 @@ export default function OrderKhata() {
   const handleDeliver = async (orderId) => {
     try {
       // 👈 আইপি আপডেট করা হয়েছে
-      const res = await axios.put('http://localhost:5000/api/orders/deliver/${orderId}`);
+      const res = await axios.put('https://eiomp.onrender.com/api/orders/deliver/${orderId}`);
       alert(res.data.message);
       loadData();
     } catch (err) {
