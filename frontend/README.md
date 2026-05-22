@@ -1,16 +1,32 @@
-# React + Vite
+# 💊 Raisa Corporation - Pharmacy Inventory Management System
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A professional, full-stack inventory and order tracking system designed for small-scale pharmacy businesses. Built with the MERN stack (MongoDB, Express, React, Node.js) and styled with a premium Lavender-Black dark theme using Tailwind CSS.
 
-Currently, two official plugins are available:
+## 🚀 Live Demo
+- **Frontend:** [Paste your Vercel Link here]
+- **Backend API:** [Paste your Render Link here]
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## ✨ Key Features
+- **Real-time Inventory Tracking:** Add and manage medicine stocks with cost and retail price analysis.
+- **Order Dispatch Management:** Efficiently record customer orders and track delivery status.
+- **Dynamic Dashboard:** Visual representation of stock levels with automated low-stock warnings (⚠️).
+- **Responsive Design:** Optimized for mobile use, allowing business owners to track data from anywhere.
+- **Cloud Database:** Integrated with MongoDB Atlas for 24/7 data availability.
 
-## React Compiler
+## 🛠️ Tech Stack
+- **Frontend:** React.js (Vite), Tailwind CSS, Axios.
+- **Backend:** Node.js, Express.js.
+- **Database:** MongoDB (Atlas).
+- **Deployment:** Vercel (Frontend), Render (Backend).
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 📸 Screenshots
+*(You can add your mobile screenshots here later)*
 
-## Expanding the ESLint configuration
+## 🛠️ Installation & Setup
+1. Clone the repository: `git clone https://github.com/your-username/raisa-corp.git`
+2. Install dependencies for both frontend and backend: `npm install`
+3. Set up your `.env` file with MongoDB Atlas credentials.
+4. Run the development server: `npm run dev`
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+*Designed & Developed by Lamia - 2026*
