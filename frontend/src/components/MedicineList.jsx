@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'ajax';
+import axios from 'axios';
 
 export default function MedicineList() {
   const [medicines, setMedicines] = useState([]);
