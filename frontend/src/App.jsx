@@ -1,154 +1,78 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import MedicineList from './components/MedicineList';
-import OrderKhata from './components/OrderKhata';
 import AddMedicine from './components/AddMedicine';
-import axios from 'axios';
+import OrderKhata from './components/OrderKhata';
 
 export default function App() {
-  // স্ট্যান্ডার্ড অনুযায়ী শুরুতে 'overview' বা ড্যাশবোর্ড পেজ অ্যাক্টিভ থাকবে
-  const [activeTab, setActiveTab] = useState('overview');
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [medicines, setMedicines] = useState([]);
-
-  useEffect(() => {
-    axios.get('https://eiomp.onrender.com/api/medicines/all')
-      .then(res => setMedicines(res.data))
-      .catch(err => console.error(err));
-  }, []);
-
-  const totalProducts = medicines.length;
-  const lowStockItems = medicines.filter(med => med.stock_qty < 10 && med.stock_qty > 0).length;
-  const outOfStockItems = medicines.filter(med => med.stock_qty === 0).length;
+  // কোন স্ক্রিন ওপen থাকবে সেটা ট্র্যাক করার জন্য (Default: dashboard)
+  const [activeTab, setActiveTab] = useState('dashboard');
 
   return (
-    <div className="flex min-h-screen bg-[#f8fafc] font-sans antialiased text-slate-800">
+    <div className="flex h-screen bg-[#F8FAFC] text-[#0F172A] font-sans antialiased">
       
-      {/* 📱 মোবাইল টপ বার */}
-      <div className="md:hidden w-full bg-[#f3e8ff] border-b border-purple-200 p-4 flex justify-between items-center fixed top-0 left-0 z-50">
-        <div className="flex items-center space-x-2">
-          <span className="w-3 h-3 rounded-full bg-purple-600 block"></span>
-          <span className="text-purple-950 font-black tracking-tight text-lg">Raisa Corporation</span>
-        </div>
-        <button 
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          className="text-purple-950 text-2xl focus:outline-none"
-        >
-          {isMobileMenuOpen ? '✕' : '☰'}
-        </button>
-      </div>
-
-      {/* 🧭 বামপাশের স্ট্যান্ডার্ড সাইডবার (Lavender & Classy Theme) */}
-      <aside className={`w-64 bg-[#f3e8ff] border-r border-purple-200/60 p-6 flex flex-col justify-between fixed h-full z-40 transition-transform duration-300 md:translate-x-0 ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'} md:static`}>
-        <div className="space-y-8 mt-12 md:mt-0">
-          
-          {/* কোম্পানি ব্র্যান্ডিং */}
-          <div className="flex items-center space-x-3 px-2">
-            <div className="w-10 h-10 rounded-xl bg-purple-600 flex items-center justify-center text-white font-black text-xl shadow-md shadow-purple-600/20">
-              R
-            </div>
+      {/* 🧭 সাইডবার (30% - Slate Dark Blue) */}
+      <aside className="w-64 bg-[#0F172A] text-slate-300 flex flex-col justify-between shadow-xl">
+        <div>
+          {/* ব্র্যান্ড লোগো ও নাম */}
+          <div className="p-6 border-b border-slate-800 bg-[#090d16] flex items-center space-x-3">
+            <span className="text-2xl">💊</span>
             <div>
-              <h2 className="text-purple-950 font-black tracking-tight text-base leading-tight">Raisa Corporation</h2>
-              <span className="text-[10px] text-purple-600 font-bold tracking-widest uppercase">Management Suite</span>
+              <h1 className="font-black text-white tracking-wide text-sm uppercase">Raisa Corp.</h1>
+              <p className="text-[10px] text-slate-500 font-medium tracking-wider">Enterprise Platform</p>
             </div>
           </div>
 
-          {/* মেনু অপশনস */}
-          <nav className="space-y-1">
+          {/* নেভিগেশন মেনু */}
+          <nav className="p-4 space-y-2 mt-4">
             <button 
-              onClick={() => { setActiveTab('overview'); setIsMobileMenuOpen(false); }}
-              className={`w-full flex items-center space-x-3.5 px-4 py-3 rounded-xl text-sm font-bold tracking-wide transition ${activeTab === 'overview' ? 'bg-purple-600 text-white shadow-md shadow-purple-600/10' : 'text-purple-900/70 hover:bg-purple-200/50 hover:text-purple-950'}`}
+              onClick={() => setActiveTab('dashboard')}
+              className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-semibold transition ${activeTab === 'dashboard' ? 'bg-[#0EA5E9] text-white shadow-lg shadow-sky-500/20' : 'hover:bg-slate-800/60 hover:text-white'}`}
             >
-              <span className="text-base">📊</span>
-              <span>Overview Dashboard</span>
+              <span>📊</span> <span>Enterprise Dashboard</span>
             </button>
 
             <button 
-              onClick={() => { setActiveTab('products'); setIsMobileMenuOpen(false); }}
-              className={`w-full flex items-center space-x-3.5 px-4 py-3 rounded-xl text-sm font-bold tracking-wide transition ${activeTab === 'products' ? 'bg-purple-600 text-white shadow-md shadow-purple-600/10' : 'text-purple-900/70 hover:bg-purple-200/50 hover:text-purple-950'}`}
+              onClick={() => setActiveTab('add')}
+              className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-semibold transition ${activeTab === 'add' ? 'bg-[#0EA5E9] text-white shadow-lg shadow-sky-500/20' : 'hover:bg-slate-800/60 hover:text-white'}`}
             >
-              <span className="text-base">📦</span>
-              <span>Products List</span>
+              <span>➕</span> <span>Add New Stock</span>
             </button>
 
             <button 
-              onClick={() => { setActiveTab('add-medicine'); setIsMobileMenuOpen(false); }}
-              className={`w-full flex items-center space-x-3.5 px-4 py-3 rounded-xl text-sm font-bold tracking-wide transition ${activeTab === 'add-medicine' ? 'bg-purple-600 text-white shadow-md shadow-purple-600/10' : 'text-purple-900/70 hover:bg-purple-200/50 hover:text-purple-950'}`}
+              onClick={() => setActiveTab('orders')}
+              className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-semibold transition ${activeTab === 'orders' ? 'bg-[#0EA5E9] text-white shadow-lg shadow-sky-500/20' : 'hover:bg-slate-800/60 hover:text-white'}`}
             >
-              <span className="text-base">➕</span>
-              <span>Add New Stock</span>
-            </button>
-
-            <button 
-              onClick={() => { setActiveTab('orders'); setIsMobileMenuOpen(false); }}
-              className={`w-full flex items-center space-x-3.5 px-4 py-3 rounded-xl text-sm font-bold tracking-wide transition ${activeTab === 'orders' ? 'bg-purple-600 text-white shadow-md shadow-purple-600/10' : 'text-purple-900/70 hover:bg-purple-200/50 hover:text-purple-950'}`}
-            >
-              <span className="text-base">📝</span>
-              <span>Order Khata</span>
+              <span>📝</span> <span>Order Dispatch & Log</span>
             </button>
           </nav>
         </div>
 
-        {/* প্রোফাইল অ্যাডমিন প্যানেল */}
-        <div className="border-t border-purple-200 pt-4 flex items-center space-x-3 px-2">
-          <div className="w-10 h-10 rounded-full bg-purple-200 border border-purple-300 flex items-center justify-center text-purple-950 font-bold">
-            LM
-          </div>
-          <div>
-            <h4 className="text-sm font-bold text-purple-950 leading-none">Lamia</h4>
-            <span className="text-[11px] text-purple-600/80 font-medium mt-1 block">System Administrator</span>
-          </div>
+        {/* সাইডবার ফুটার */}
+        <div className="p-4 border-t border-slate-800 text-center text-xs text-slate-500 font-medium">
+          v2.0 • Live Cloud Connection
         </div>
       </aside>
 
-      {/* 🖥️ ডানপাশের মেইন কনটেন্ট এরিয়া (Off-White Background) */}
-      <main className="flex-1 p-6 md:p-10 overflow-y-auto mt-16 md:mt-0">
-        <div className="max-w-7xl mx-auto">
-          
-          {/* ১. শুরুতে দেখানোর জন্য স্ট্যান্ডার্ড ওভারভিউ ইন্টারফেস */}
-          {activeTab === 'overview' && (
-            <div className="space-y-8 animate-fadeIn">
-              <div>
-                <h1 className="text-3xl font-black text-slate-900 tracking-tight">Welcome back, Lamia</h1>
-                <p className="text-sm text-slate-500 mt-1">Here is the latest corporate status of Raisa Corporation.</p>
-              </div>
+      {/* 🖥️ মেইন কন্টেন্ট এরিয়া (60% - Slate Light Gray) */}
+      <main className="flex-1 flex flex-col overflow-y-auto">
+        
+        {/* টপ গ্লোবাল হেডার */}
+        <header className="bg-white border-b border-slate-200 px-8 py-4 flex justify-between items-center shadow-sm sticky top-0 z-10">
+          <div className="flex items-center space-x-2">
+            <span className="text-xs font-bold uppercase tracking-widest bg-slate-100 text-slate-600 px-2.5 py-1 rounded-md">
+              System Active
+            </span>
+          </div>
+          <div className="flex items-center space-x-3">
+            <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+            <span className="text-xs font-semibold text-slate-500">Connected to MongoDB Atlas</span>
+          </div>
+        </header>
 
-              {/* সামারি গ্রিড */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                <div className="bg-white border border-slate-200/80 rounded-2xl p-6 shadow-sm">
-                  <div className="w-12 h-12 bg-purple-50 rounded-xl flex items-center justify-center text-xl text-purple-600">📦</div>
-                  <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mt-4">Total Active Items</p>
-                  <h3 className="text-3xl font-black text-slate-900 mt-1 font-mono">{totalProducts}</h3>
-                </div>
-                <div className="bg-white border border-slate-200/80 rounded-2xl p-6 shadow-sm">
-                  <div className="w-12 h-12 bg-amber-50 rounded-xl flex items-center justify-center text-xl text-amber-600">⚠️</div>
-                  <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mt-4">Critical Low Stocks</p>
-                  <h3 className="text-3xl font-black text-slate-900 mt-1 font-mono">{lowStockItems}</h3>
-                </div>
-                <div className="bg-white border border-slate-200/80 rounded-2xl p-6 shadow-sm">
-                  <div className="w-12 h-12 bg-rose-50 rounded-xl flex items-center justify-center text-xl text-rose-600">🚫</div>
-                  <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mt-4">Out of Stock Items</p>
-                  <h3 className="text-3xl font-black text-slate-900 mt-1 font-mono">{outOfStockItems}</h3>
-                </div>
-              </div>
-
-              {/* শর্টকাট প্যানেল কার্ড */}
-              <div className="bg-white border border-slate-200/80 rounded-2xl p-8 shadow-sm">
-                <h4 className="font-bold text-slate-900 text-lg">Quick Operations Control</h4>
-                <p className="text-slate-500 text-sm mt-1">Easily jump to other corporate sectors from here.</p>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
-                  <button onClick={() => setActiveTab('add-medicine')} className="p-4 border border-slate-100 rounded-xl bg-slate-50/50 hover:bg-purple-50/50 hover:border-purple-200 text-left transition font-semibold text-slate-800 text-sm flex items-center justify-between">
-                    <span>Add New Corporate Stock</span> <span className="text-purple-600">➔</span>
-                  </button>
-                  <button onClick={() => setActiveTab('products')} className="p-4 border border-slate-100 rounded-xl bg-slate-50/50 hover:bg-purple-50/50 hover:border-purple-200 text-left transition font-semibold text-slate-800 text-sm flex items-center justify-between">
-                    <span>Review Inventory Ledger</span> <span className="text-purple-600">➔</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {activeTab === 'products' && <MedicineList />}
-          {activeTab === 'add-medicine' && <AddMedicine />}
+        {/* ডাইনামিক পেজ রেন্ডারিং */}
+        <div className="p-8 max-w-7xl w-full mx-auto">
+          {activeTab === 'dashboard' && <MedicineList />}
+          {activeTab === 'add' && <AddMedicine />}
           {activeTab === 'orders' && <OrderKhata />}
         </div>
       </main>

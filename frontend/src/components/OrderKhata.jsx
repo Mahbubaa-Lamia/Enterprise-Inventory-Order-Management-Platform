@@ -13,12 +13,12 @@ export default function OrderKhata() {
 
   const loadData = async () => {
     try {
-      const medRes = await axios.get('https://eiomp.onrender.com/api/medicines/all');
+      const medRes = await axios.get('http://192.168.0.103:5000/api/medicines/all');
       setMedicines(medRes.data);
-      const orderRes = await axios.get('https://eiomp.onrender.com/api/orders/all');
+      const orderRes = await axios.get('http://192.168.0.103:5000/api/orders/all');
       setOrders(orderRes.data);
     } catch (err) {
-      console.error("Error loading data:", err);
+      console.error(err);
     }
   };
 
@@ -31,94 +31,101 @@ export default function OrderKhata() {
     const orderData = { customerName, phone, address, medicineId: selectedMedicine, quantity: Number(quantity) };
 
     try {
-      await axios.post('https://eiomp.onrender.com/api/orders/add', orderData);
-      alert('অর্ডার সফলভাবে ডাটাবেজে যুক্ত হয়েছে!');
+      await axios.post('http://192.168.0.103:5000/api/orders/add', orderData);
+      alert('Order placed successfully!');
       setCustomerName(''); setPhone(''); setAddress(''); setSelectedMedicine(''); setQuantity('');
       loadData();
     } catch (err) {
-      alert('ত্রুটি: অর্ডার প্রসেস করা যায়নি');
+      alert('Error: Dispatch failed');
     }
   };
 
   const handleDeliver = async (orderId) => {
     try {
-      // 👈 এখানে নিশ্চিতভাবে ব্যাকটিক (``) ব্যবহার করা হয়েছে
-      const res = await axios.put(`https://eiomp.onrender.com/api/orders/deliver/${orderId}`);
-      alert(res.data.message || 'ডেলিভারি সফল!');
+      const res = await axios.put(`http://192.168.0.103:5000/api/orders/deliver/${orderId}`);
+      alert(res.data.message);
       loadData();
     } catch (err) {
-      alert('ডেলিভারি প্রসেস করা যায়নি');
+      alert('Delivery update failed');
     }
   };
 
   return (
-    <div className="p-6 space-y-12">
-      <div>
-        <h2 className="text-xl font-bold text-purple-300 mb-8 flex items-center space-x-2">
-          <span>📝</span> <span>Order Dispatch Input</span>
-        </h2>
+    <div className="space-y-10">
+      {/* Input Form */}
+      <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm💡">
+        <div className="mb-6">
+          <h2 className="text-lg font-bold text-slate-800">Order Dispatch Input</h2>
+          <p className="text-xs text-slate-400">Generate fresh client invoice and logistical logging records</p>
+        </div>
         <form onSubmit={handleOrderSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          <input type="text" placeholder="কাস্টমারের নাম" value={customerName} onChange={e => setCustomerName(e.target.value)} required className="bg-neutral-950 border border-neutral-800 rounded-xl p-3.5 text-white focus:ring-2 focus:ring-purple-500 outline-none transition" />
-          <input type="text" placeholder="মোবাইল নম্বর" value={phone} onChange={e => setPhone(e.target.value)} required className="bg-neutral-950 border border-neutral-800 rounded-xl p-3.5 text-white focus:ring-2 focus:ring-purple-500 outline-none transition" />
-          <input type="text" placeholder="ডেলিভারি শিপমেন্ট ঠিকানা" value={address} onChange={e => setAddress(e.target.value)} required className="bg-neutral-950 border border-neutral-800 rounded-xl p-3.5 text-white md:col-span-2 focus:ring-2 focus:ring-purple-500 outline-none transition" />
+          <input type="text" placeholder="Customer Name" value={customerName} onChange={e => setCustomerName(e.target.value)} required className="bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm text-slate-800 focus:ring-2 focus:ring-[#0EA5E9] focus:bg-white outline-none transition" />
+          <input type="text" placeholder="Mobile Number" value={phone} onChange={e => setPhone(e.target.value)} required className="bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm text-slate-800 focus:ring-2 focus:ring-[#0EA5E9] focus:bg-white outline-none transition" />
+          <input type="text" placeholder="Delivery Shipment Address" value={address} onChange={e => setAddress(e.target.value)} required className="bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm text-slate-800 md:col-span-2 focus:ring-2 focus:ring-[#0EA5E9] focus:bg-white outline-none transition" />
           
-          <select value={selectedMedicine} onChange={e => setSelectedMedicine(e.target.value)} required className="bg-neutral-950 border border-neutral-800 rounded-xl p-3.5 text-slate-300 focus:ring-2 focus:ring-purple-500 outline-none transition">
-            <option value="">প্রোডাক্ট সিলেক্ট করুন</option>
+          <select value={selectedMedicine} onChange={e => setSelectedMedicine(e.target.value)} required className="bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm text-slate-500 focus:ring-2 focus:ring-[#0EA5E9] focus:bg-white outline-none transition">
+            <option value="">Select Product Item</option>
             {medicines.map(med => (
-              <option key={med._id} value={med._id} className="bg-neutral-950 text-white">{med.name} (স্টক: {med.stock_qty})</option>
+              <option key={med._id} value={med._id} className="text-slate-800">{med.name} (Available: {med.stock_qty})</option>
             ))}
           </select>
           
-          <input type="number" placeholder="পরিমাণ (পিস)" value={quantity} onChange={e => setQuantity(e.target.value)} required className="bg-neutral-950 border border-neutral-800 rounded-xl p-3.5 text-white focus:ring-2 focus:ring-purple-500 outline-none transition" />
+          <input type="number" placeholder="Volume / Quantity" value={quantity} onChange={e => setQuantity(e.target.value)} required className="bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm text-slate-800 focus:ring-2 focus:ring-[#0EA5E9] focus:bg-white outline-none transition" />
           
-          <button type="submit" className="w-full md:col-span-2 bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold py-4 rounded-xl shadow-lg shadow-purple-500/10 hover:from-purple-700 transition duration-200">
-            অর্ডার বুকিং কনফার্ম করুন
+          <button type="submit" className="w-full md:col-span-2 bg-[#0EA5E9] hover:bg-[#0284C7] text-white font-semibold py-3.5 rounded-xl transition duration-200 text-sm mt-2">
+            Confirm & Dispatch Order
           </button>
         </form>
       </div>
 
-      <div className="border-t border-neutral-900"></div>
-
-      <div>
-        <h2 className="text-xl font-bold text-slate-200 mb-8 flex items-center space-x-2">
-          <span>📊</span> <span>Order Processing Logs</span>
-        </h2>
+      {/* Logs Table */}
+      <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+        <div className="p-6 border-b border-slate-100">
+          <h2 className="text-lg font-bold text-slate-800">Order Processing Logs</h2>
+          <p className="text-xs text-slate-400">Archived operational dispatch tracking records</p>
+        </div>
         {orders.length === 0 ? (
-          <p className="text-center text-slate-500 py-12">বর্তমানে কোনো অ্যাক্টিভ অর্ডার লগ নেই।</p>
+          <p className="text-center text-slate-400 py-12 text-sm">No operational dispatch logs currently saved.</p>
         ) : (
-          <div className="overflow-x-auto rounded-2xl border border-neutral-800 bg-neutral-950 shadow-inner">
+          <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse table-auto">
               <thead>
-                <tr className="border-b border-neutral-800 bg-neutral-900/60 text-slate-400 font-semibold text-xs uppercase tracking-widest">
-                  <th className="p-5">গ্রাহক বিবরণ</th>
-                  <th className="p-5">প্রোডাক্ট ও ভলিউম</th>
-                  <th className="p-5 text-center">গেটওয়ে স্ট্যাটাস</th>
-                  <th className="p-5 text-right">অ্যাকশন</th>
+                <tr className="bg-slate-50 border-b border-slate-200 text-slate-500 font-semibold text-xs uppercase tracking-wider">
+                  <th className="p-5">Client Description</th>
+                  <th className="p-5">Product & Vol</th>
+                  <th className="p-5 text-center">Gateway Status</th>
+                  <th className="p-5 text-right">Action</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-neutral-900 text-sm text-slate-300">
+              <tbody className="divide-y divide-slate-100 text-sm text-slate-600">
                 {orders.map(order => (
-                  <tr key={order._id} className="hover:bg-neutral-900/40 transition">
+                  <tr key={order._id} className="hover:bg-slate-50/60 transition">
                     <td className="p-5">
-                      <div className="font-bold text-white tracking-wide">{order.customerName}</div>
-                      <div className="text-xs text-slate-500 font-mono mt-1">{order.phone}</div>
+                      <div className="font-semibold text-slate-800">{order.customerName}</div>
+                      <div className="text-xs text-slate-400 font-mono mt-0.5">{order.phone}</div>
                     </td>
                     <td className="p-5">
-                      <span className="font-semibold text-slate-200">{order.medicineId?.name || 'N/A'}</span>
-                      <span className="ml-3 px-2.5 py-1 bg-purple-500/10 text-purple-400 border border-purple-500/20 rounded-xl text-xs font-black">{order.quantity} পিস</span>
+                      <span className="font-medium text-slate-700">{order.medicineId?.name || 'Unknown Item'}</span>
+                      <span className="ml-2.5 px-2 py-0.5 bg-slate-100 text-slate-600 rounded-md text-xs font-mono">{order.quantity} Pcs</span>
                     </td>
                     <td className="p-5 text-center">
-                      <span className={`inline-block px-3 py-1.5 rounded-xl text-xs font-black uppercase tracking-wide ${order.status === 'Pending' ? 'bg-amber-500/10 text-amber-400 border border-amber-500/20' : 'bg-purple-500/10 text-purple-300 border border-purple-500/20'}`}>
-                        {order.status === 'Pending' ? '⏱️ Pending' : '✅ Dispatched'}
-                      </span>
+                      {order.status === 'Pending' ? (
+                        <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-amber-50 text-amber-600 border border-amber-100">
+                          ⏱️ Pending Approval
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-600 border border-emerald-100">
+                          ✅ Dispatched
+                        </span>
+                      )}
                     </td>
                     <td className="p-5 text-right">
                       {order.status === 'Pending' ? (
-                        <button onClick={() => handleDeliver(order._id)} className="bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold px-4 py-2 rounded-xl transition shadow-lg shadow-purple-600/10">
-                          ডেলিভারি কনফার্ম
+                        <button onClick={() => handleDeliver(order._id)} className="bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-semibold px-4 py-2 rounded-xl transition">
+                          Deliver Order
                         </button>
                       ) : (
-                        <span className="text-xs text-slate-500 font-medium bg-neutral-900/60 px-3 py-1.5 rounded-xl border border-neutral-800">Archived</span>
+                        <span className="text-xs text-slate-400 bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-200 font-medium">Settled</span>
                       )}
                     </td>
                   </tr>
@@ -130,4 +137,4 @@ export default function OrderKhata() {
       </div>
     </div>
   );
-} 
+}
