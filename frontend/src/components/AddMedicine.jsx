@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'export-default';
+import axios from 'axios'; // ✅ এটা কারেক্ট
 
 export default function AddMedicine() {
   const [name, setName] = useState('');

@@ -53,7 +53,7 @@ export default function OrderKhata() {
   return (
     <div className="space-y-10">
       {/* Input Form */}
-      <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm💡">
+      <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm">
         <div className="mb-6">
           <h2 className="text-lg font-bold text-slate-800">Order Dispatch Input</h2>
           <p className="text-xs text-slate-400">Generate fresh client invoice and logistical logging records</p>
